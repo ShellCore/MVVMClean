@@ -1,2 +1,3 @@
 rootProject.name='Memory Notes'
 include ':app'
+include ':core'
