@@ -1,10 +1,9 @@
 package page.shell.tech.android.memorynotes.presentation
 
+import android.app.AlertDialog
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -21,6 +20,11 @@ class NoteFragment : Fragment() {
     private lateinit var viewModel: NoteViewModel
     private var currentNote = Note("", "", 0L, 0L)
     private var noteId = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +67,31 @@ class NoteFragment : Fragment() {
         }
 
         observeViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_note, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.actionDeleteNote -> {
+                if (context != null && noteId != 0L) {
+                    AlertDialog.Builder(context)
+                        .setTitle("Delete note")
+                        .setMessage("Are you sure you want to delete this note?")
+                        .setPositiveButton("Yes") { dialog, which ->
+                            viewModel.deleteNote(currentNote)
+                        }
+                        .setNegativeButton("Cancel") { dialog, which -> }
+                        .create()
+                        .show()
+                }
+            }
+        }
+
+        return true
     }
 
     private fun observeViewModel() {

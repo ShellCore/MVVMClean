@@ -4,4 +4,5 @@
     <string name="note_hint_title">Title</string>
     <string name="note_hint_content">Content</string>
     <string name="lastDate">Last updated: %s</string>
+    <string name="menu_note_delete">Delete note</string>
 </resources>
