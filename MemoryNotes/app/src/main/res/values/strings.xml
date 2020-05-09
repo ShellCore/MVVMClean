@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Memory Notes</string>
+
+    <string name="note_hint_title">Title</string>
+    <string name="note_hint_content">Content</string>
+    <string name="note_menu_delete">Delete note</string>
+
+    <string name="note_save_success">Done!</string>
+    <string name="note_save_error">Something went wrong. Please try again.</string>
+
+    <string name="item_note_lastDate">Last updated: %s</string>
+    <string name="item_note_wordCount">%d words</string>
+
+    <string name="dialog_deleteNote_title">Delete note</string>
+    <string name="dialog_deleteNote_question">Are you sure you want to delete this note?</string>
+    <string name="dialog_deleteNote_btnAccept">Yes</string>
+    <string name="dialog_deleteNote_cancel">Cancel</string>
+</resources>
