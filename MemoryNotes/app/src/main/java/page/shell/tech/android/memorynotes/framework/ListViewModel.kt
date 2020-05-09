@@ -8,10 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import page.shell.tech.android.core.data.Note
 import page.shell.tech.android.core.repository.NoteRepository
-import page.shell.tech.android.core.usecase.AddNote
-import page.shell.tech.android.core.usecase.GetAllNotes
-import page.shell.tech.android.core.usecase.GetNote
-import page.shell.tech.android.core.usecase.RemoveNote
+import page.shell.tech.android.memorynotes.framework.di.ApplicationModule
+import page.shell.tech.android.memorynotes.framework.di.DaggerViewModelComponent
+import javax.inject.Inject
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -19,12 +18,15 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = NoteRepository(RoomNoteDataSource(application))
 
-    val useCases = UseCases(
-        AddNote(repository),
-        GetAllNotes(repository),
-        GetNote(repository),
-        RemoveNote(repository)
-    )
+    @Inject
+    lateinit var useCases: UseCases
+
+    init {
+        DaggerViewModelComponent.builder()
+            .applicationModule(ApplicationModule(getApplication()))
+            .build()
+            .inject(this)
+    }
 
     val notes = MutableLiveData<List<Note>>()
 
