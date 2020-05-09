@@ -23,7 +23,7 @@ class NotesListAdapter(private var notes: ArrayList<Note>) :
 
     override fun getItemCount() = notes.size
 
-    fun updateNotes(notes: ArrayList<Note>) {
+    fun updateNotes(notes: List<Note>) {
         this.notes.clear()
         this.notes.addAll(notes)
         notifyDataSetChanged()
