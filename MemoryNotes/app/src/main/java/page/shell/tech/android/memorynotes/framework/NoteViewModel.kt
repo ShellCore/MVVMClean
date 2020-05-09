@@ -19,7 +19,7 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = NoteRepository(RoomNoteDataSource(application))
 
-    val useCases = UseCases(
+    private val useCases = UseCases(
         AddNote(repository),
         GetAllNotes(repository),
         GetNote(repository),
