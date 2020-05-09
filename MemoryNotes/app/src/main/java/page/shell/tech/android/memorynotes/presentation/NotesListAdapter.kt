@@ -10,7 +10,7 @@ import page.shell.tech.android.memorynotes.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NotesListAdapter(private var notes: ArrayList<Note>) :
+class NotesListAdapter(private var notes: ArrayList<Note>, val actions: ListAction) :
     RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -29,8 +29,9 @@ class NotesListAdapter(private var notes: ArrayList<Note>) :
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val container = itemView.itemNoteContainer
         private val title = itemView.txtItemNoteTitle
         private val content = itemView.txtItemNoteContent
         private val date = itemView.txtItemNoteDate
@@ -41,6 +42,10 @@ class NotesListAdapter(private var notes: ArrayList<Note>) :
             val dateString =
                 itemView.context.getString(R.string.lastDate, note.updateTime.toFormattedDate())
             date.text = dateString
+
+            container.setOnClickListener {
+                actions.onClick(note.id)
+            }
         }
     }
 }

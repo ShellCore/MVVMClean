@@ -13,9 +13,9 @@ import kotlinx.android.synthetic.main.fragment_list.*
 import page.shell.tech.android.memorynotes.R
 import page.shell.tech.android.memorynotes.framework.ListViewModel
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), ListAction {
 
-    private val noteListAdapter = NotesListAdapter(arrayListOf())
+    private val noteListAdapter = NotesListAdapter(arrayListOf(), this)
     private lateinit var viewModel: ListViewModel
 
     override fun onCreateView(
@@ -45,6 +45,10 @@ class ListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getNotes()
+    }
+
+    override fun onClick(id: Long) {
+        goToNoteDetails(id)
     }
 
     private fun observeViewModel() {
