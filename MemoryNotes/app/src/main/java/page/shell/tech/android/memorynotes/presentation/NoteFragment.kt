@@ -116,12 +116,12 @@ class NoteFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.saved.observe(viewLifecycleOwner, Observer {
             if (it) {
-                Toast.makeText(context, R.string.detail_saveNote_success, Toast.LENGTH_SHORT)
+                Toast.makeText(context, R.string.note_save_success, Toast.LENGTH_SHORT)
                     .show()
                 hideKeyBoard()
                 Navigation.findNavController(edtTitle).popBackStack()
             } else {
-                Toast.makeText(context, R.string.detail_saveNote_error, Toast.LENGTH_SHORT)
+                Toast.makeText(context, R.string.note_save_error, Toast.LENGTH_SHORT)
                     .show()
             }
         })

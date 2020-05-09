@@ -44,12 +44,21 @@
         <TextView
             android:id="@+id/txtItemNoteDate"
             style="@style/noteDetail"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtItemNoteContent"
             tools:text="Last updated" />
+
+        <TextView
+            android:id="@+id/txtWordCount"
+            style="@style/noteDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtItemNoteContent"
+            tools:text="5 words" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

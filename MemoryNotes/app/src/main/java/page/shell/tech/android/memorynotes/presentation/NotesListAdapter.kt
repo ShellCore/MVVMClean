@@ -36,13 +36,22 @@ class NotesListAdapter(private var notes: ArrayList<Note>, val actions: ListActi
         private val title = itemView.txtItemNoteTitle
         private val content = itemView.txtItemNoteContent
         private val date = itemView.txtItemNoteDate
+        private val wordCount = itemView.txtWordCount
 
         fun bind(note: Note) {
             title.text = note.title
             content.text = note.content
+
             val dateString =
-                itemView.context.getString(R.string.lastDate, note.updateTime.toFormattedDate())
+                itemView.context.getString(
+                    R.string.item_note_lastDate,
+                    note.updateTime.toFormattedDate()
+                )
             date.text = dateString
+
+            val wordString =
+                itemView.context.getString(R.string.item_note_wordCount, note.wordCount)
+            wordCount.text = wordString
 
             container.setOnClickListener {
                 actions.onClick(note.id)
