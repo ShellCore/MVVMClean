@@ -13,15 +13,16 @@ import java.util.*
 class NotesListAdapter(private var notes: ArrayList<Note>, val actions: ListAction) :
     RecyclerView.Adapter<NotesListAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
+        LayoutInflater.from(parent.context)
             .inflate(R.layout.item_note, parent, false)
-        return ViewHolder(inflater)
-    }
+    )
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(notes[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bind(notes[position])
 
-    override fun getItemCount() = notes.size
+    override fun getItemCount() =
+        notes.size
 
     fun updateNotes(notes: List<Note>) {
         this.notes.clear()

@@ -35,36 +35,10 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        arguments?.let {
-            noteId = NoteFragmentArgs.fromBundle(it).noteId
-        }
-
-        if (noteId != 0L) {
-            viewModel.getNote(noteId)
-        }
-
-        btnSave.setOnClickListener {
-            if (edtTitle.text.toString().isNotEmpty()
-                || edtContent.text.toString().isNotEmpty()
-            ) {
-                val time = System.currentTimeMillis()
-                currentNote.apply {
-                    title = edtTitle.text.toString()
-                    content = edtContent.text.toString()
-                    updateTime = time
-                    if (id == 0L) {
-                        creationTime = time
-                    }
-                }
-                viewModel.saveNote(currentNote)
-            } else {
-                Navigation.findNavController(it)
-                    .popBackStack()
-            }
-        }
+        loadNoteIfExists()
+        setupOnClickListeners()
 
         observeViewModel()
     }
@@ -77,36 +51,77 @@ class NoteFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.actionDeleteNote -> {
-                if (context != null && noteId != 0L) {
-                    AlertDialog.Builder(context)
-                        .setTitle("Delete note")
-                        .setMessage("Are you sure you want to delete this note?")
-                        .setPositiveButton("Yes") { dialog, which ->
-                            viewModel.deleteNote(currentNote)
-                        }
-                        .setNegativeButton("Cancel") { dialog, which -> }
-                        .create()
-                        .show()
-                }
+                deleteCurrentNote()
             }
         }
 
         return true
     }
 
+    private fun setupOnClickListeners() {
+        btnSave.setOnClickListener {
+            if (requiredDataCompleted()) {
+                saveNote()
+            } else {
+                Navigation.findNavController(it)
+                    .popBackStack()
+            }
+        }
+    }
+
+    private fun saveNote() {
+        val time = System.currentTimeMillis()
+        currentNote.apply {
+            title = edtTitle.text.toString()
+            content = edtContent.text.toString()
+            updateTime = time
+            if (id == 0L) {
+                creationTime = time
+            }
+        }
+        viewModel.saveNote(currentNote)
+    }
+
+    private fun deleteCurrentNote() {
+        if (context != null && noteId != 0L) {
+            showDeleteNoteDialog()
+        }
+    }
+
+    private fun showDeleteNoteDialog() {
+        AlertDialog.Builder(context)
+            .setTitle(R.string.dialog_deleteNote_title)
+            .setMessage(R.string.dialog_deleteNote_question)
+            .setPositiveButton(R.string.dialog_deleteNote_btnAccept) { _, _ ->
+                viewModel.deleteNote(currentNote)
+            }
+            .setNegativeButton(R.string.dialog_deleteNote_cancel) { _, _ -> }
+            .create()
+            .show()
+    }
+
+    private fun requiredDataCompleted() = edtTitle.text.toString().isNotEmpty()
+            || edtContent.text.toString().isNotEmpty()
+
+    private fun loadNoteIfExists() {
+        arguments?.let {
+            noteId = NoteFragmentArgs.fromBundle(it).noteId
+        }
+
+        if (noteId != 0L) {
+            viewModel.getNote(noteId)
+        }
+    }
+
     private fun observeViewModel() {
         viewModel.saved.observe(viewLifecycleOwner, Observer {
             if (it) {
-                Toast.makeText(context, "Done!", Toast.LENGTH_SHORT)
+                Toast.makeText(context, R.string.detail_saveNote_success, Toast.LENGTH_SHORT)
                     .show()
                 hideKeyBoard()
                 Navigation.findNavController(edtTitle).popBackStack()
             } else {
-                Toast.makeText(
-                    context,
-                    "Something went wrong. Please try again.",
-                    Toast.LENGTH_SHORT
-                )
+                Toast.makeText(context, R.string.detail_saveNote_error, Toast.LENGTH_SHORT)
                     .show()
             }
         })

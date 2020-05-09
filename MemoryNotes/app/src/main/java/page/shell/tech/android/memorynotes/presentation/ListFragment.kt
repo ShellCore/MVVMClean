@@ -28,16 +28,10 @@ class ListFragment : Fragment(), ListAction {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recList.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = noteListAdapter
-        }
-
-        btnAdd.setOnClickListener {
-            goToNoteDetails()
-        }
-
         viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
+
+        setupList()
+        setupOnClickListeners()
 
         observeViewModel()
     }
@@ -49,6 +43,19 @@ class ListFragment : Fragment(), ListAction {
 
     override fun onClick(id: Long) {
         goToNoteDetails(id)
+    }
+
+    private fun setupOnClickListeners() {
+        btnAdd.setOnClickListener {
+            goToNoteDetails()
+        }
+    }
+
+    private fun setupList() {
+        recList.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = noteListAdapter
+        }
     }
 
     private fun observeViewModel() {
