@@ -20,6 +20,7 @@ class NoteFragment : Fragment() {
 
     private lateinit var viewModel: NoteViewModel
     private var currentNote = Note("", "", 0L, 0L)
+    private var noteId = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +33,14 @@ class NoteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+
+        arguments?.let {
+            noteId = NoteFragmentArgs.fromBundle(it).noteId
+        }
+
+        if (noteId != 0L) {
+            viewModel.getNote(noteId)
+        }
 
         btnSave.setOnClickListener {
             if (edtTitle.text.toString().isNotEmpty()
@@ -70,6 +79,14 @@ class NoteFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 )
                     .show()
+            }
+        })
+
+        viewModel.currentNote.observe(viewLifecycleOwner, Observer { note ->
+            note?.let {
+                currentNote = it
+                edtTitle.setText(it.title)
+                edtContent.setText(it.content)
             }
         })
     }
